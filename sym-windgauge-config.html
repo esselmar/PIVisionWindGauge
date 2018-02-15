@@ -1,0 +1,84 @@
+<ul id="table-config" kendo-panel-bar class="t-side-panel-bgcolor" style="font-size: 14px;">
+
+    <li class="k-state-active">
+        <span class="panel-bar-label-no-wrap">Config Options</span>
+        <div style="margin: 3px;">
+		
+            <label ng-repeat="(name, col) in def.configure.allColumns">
+                <div class="flex-align-center" ng-show="def.configure.displayColumn(col.label, runtimeData.metaData)">
+                    <input type="checkbox"
+                           class="c-config-checkbox"
+                           ng-checked="def.configure.isColumnVisible(config, name)"
+                           ng-click="def.configure.toggleColumn(config, name)"
+                           value="{{::name}}">{{::col.label}}
+                </div>
+            </label>
+			
+			<label class="flex-align-center" style="margin-top:8px; margin-left: 8px;">
+				<input type="checkbox" class="c-config-checkbox"
+					ng-model="config.showValueCheckboxValue">Show Value<br />
+			</label>
+			
+			<label class="flex-align-center" style="margin-top:8px; margin-left: 8px;">
+				<input type="checkbox" class="c-config-checkbox"
+					ng-model="config.showValueUnitsCheckboxValue">Show Value Units<br />
+			</label>
+						
+			<label class="flex-align-center" style="margin-top:8px; margin-left: 8px;">
+				<input type="checkbox" class="c-config-checkbox"
+					ng-model="config.showTitleCheckboxValue">Label (leave blank to use tagname)<br />
+			</label>
+			
+			<label class="config-option-single-row" style="margin-top:8px; margin-left: 1px;">
+				<input type="text" class=""
+					ng-model="config.gaugeTitle"> <br />
+			</label>
+			
+        </div>
+    </li>
+
+    <li ng-show="!config.RetrieveCollectionData" ng-click="scrollToBottom()" class="k-state-active">
+        <span class="panel-bar-label-no-wrap">Tags in Display</span>
+        <div style="width: 85%; margin: 10px 0 15px 15px;">
+		
+			The first tag in the list below is the displayed wind direction, while the second is the wind speed. Additional tags will not be displayed.
+		
+            <div class="trend-config-trace-list" tabindex="0" style="padding: 4px"
+                 ng-keydown="def.configure.onChangeRow($event, runtimeData)">
+                <div ng-repeat="row in runtimeData.rowList track by $index"
+                     ng-click="runtimeData.currentRow = $index"
+                     ng-style="runtimeData.rowList.length > 1 && runtimeData.currentRow === $index && { 'background-color' : '#d5d5d5' }"
+                     class="trend-config-trace-list-item"
+                     title="{{row.path}}">{{row.label}}</div>
+            </div>
+
+            <div class="c-button-default-container" style="padding: 4px 4px 0 4px; margin-top: 0; margin-bottom: 0" ng-if="runtimeData.rowList.length > 1">
+                <button type="button" class="c-primary-button trend-config-trace-arrange-button"
+                        ng-disabled="runtimeData.currentRow === 0"
+                        ng-click="def.configure.moveRow(this.$parent, 'up')">
+                    <span class="k-icon k-i-arrow-n"></span>
+                </button>
+                <button type="button" class="c-primary-button trend-config-trace-arrange-button"
+                        ng-disabled="runtimeData.currentRow === runtimeData.rowList.length - 1"
+                        ng-click="def.configure.moveRow(this.$parent, 'down')">
+                    <span class="k-icon k-i-arrow-s"></span>
+                </button>
+                <button type="button" class="c-primary-button trend-config-trace-arrange-button"
+                        ng-disabled="runtimeData.currentRow === 0"
+                        ng-click="def.configure.moveRow(this.$parent, 'top')">
+                    <span class="k-icon k-i-seek-n"></span>
+                </button>
+                <button type="button" class="c-primary-button trend-config-trace-arrange-button"
+                        ng-disabled="runtimeData.currentRow === runtimeData.rowList.length - 1"
+                        ng-click="def.configure.moveRow(this.$parent, 'bottom')">
+                    <span class="k-icon k-i-seek-s"></span>
+                </button>
+                <button type="button" class="c-primary-button trend-config-trace-arrange-button"
+                        ng-click="def.configure.deleteRow(this.$parent)">
+                    <span class="k-icon k-delete"></span>
+                </button>
+            </div>
+			
+        </div>
+    </li>
+</ul>
